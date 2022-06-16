@@ -162,20 +162,4 @@ public class ComposeFragment extends Fragment {
         return new File(mediaStorageDir.getPath() + File.separator + photoFileName);
     }
 
-    private void queryPosts() {
-        ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
-        query.include(Post.KEY_USER);
-        query.findInBackground(new FindCallback<Post>() {
-            @Override
-            public void done(List<Post> objects, ParseException e) {
-                if (e != null) {
-                    Log.i(TAG, "queryPosts error", e);
-                    return;
-                }
-                for (Post post : objects) {
-                    Log.i(TAG, "Post: " + post.getDescription() + " " + post.getUser().getUsername());
-                }
-            }
-        });
-    }
 }
