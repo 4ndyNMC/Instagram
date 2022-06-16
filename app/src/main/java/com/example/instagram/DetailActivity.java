@@ -25,6 +25,10 @@ public class DetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
 
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setIcon(R.mipmap.ic_logo);
+
         tvUsername = findViewById(R.id.tvDetailUsername);
         tvTimestamp = findViewById(R.id.tvDetailTimestamp);
         tvDescription = findViewById(R.id.tvDetailDescription);

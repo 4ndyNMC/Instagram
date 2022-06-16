@@ -22,6 +22,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.FileProvider;
 
+import com.google.android.material.bottomnavigation.BottomNavigationItemView;
+import com.google.android.material.bottomnavigation.BottomNavigationMenuView;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.snackbar.Snackbar;
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -44,6 +47,10 @@ public class MainActivity extends AppCompatActivity {
     private Button btnPicture;
     private Button btnSubmit;
     private Button btnFeed;
+    private BottomNavigationView bottomNavigationView;
+    BottomNavigationItemView btnHome;
+    BottomNavigationItemView btnCompose;
+    BottomNavigationItemView btnProfile;
     private File photoFile;
     public String photoFileName = "photo.jpg";
 
@@ -53,9 +60,20 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         clMain = findViewById(R.id.clMain);
         etDescription = findViewById(R.id.etDescription);
+        ivPreview = findViewById(R.id.ivPreview);
         btnPicture = findViewById(R.id.btnPicture);
         btnSubmit = findViewById(R.id.btnSubmit);
         btnFeed = findViewById(R.id.btnFeed);
+        btnHome = findViewById(R.id.action_home);
+        btnCompose = findViewById(R.id.action_compose);
+        btnProfile = findViewById(R.id.action_profile);
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigation);
+
+        ivPreview.setImageResource(R.drawable.ic_baseline_image_24);
+        btnCompose.performClick();
+        setColors(getColor(R.color.white),
+                getColor(R.color.black),
+                getColor(R.color.white));
 
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -94,7 +112,36 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-//        queryPosts();
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.action_compose:
+                        setColors(getColor(R.color.white),
+                                getColor(R.color.black),
+                                getColor(R.color.white));
+                        return true;
+                    case R.id.action_home:
+                        setColors(getColor(R.color.black),
+                                getColor(R.color.white),
+                                getColor(R.color.white));
+                        return true;
+                    case R.id.action_profile:
+                        setColors(getColor(R.color.white),
+                                getColor(R.color.white),
+                                getColor(R.color.black));
+                        return true;
+                    default: return true;
+                }
+            }
+        });
+
+    }
+
+    private void setColors(int home, int compose, int profile) {
+        btnHome.setBackgroundColor(home);
+        btnCompose.setBackgroundColor(compose);
+        btnProfile.setBackgroundColor(profile);
     }
 
     private void launchCamera() {
