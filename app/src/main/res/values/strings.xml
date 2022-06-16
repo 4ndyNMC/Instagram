@@ -2,6 +2,8 @@
     <string name="app_name">Instagram</string>
     <string name="login_username">username</string>
     <string name="login_password">password</string>
+    <string name="login_login">login</string>
+    <string name="login_signup">sign up</string>
     <string name="main_description">description</string>
     <string name="main_picture">take a picture</string>
     <string name="main_submit">submit</string>
