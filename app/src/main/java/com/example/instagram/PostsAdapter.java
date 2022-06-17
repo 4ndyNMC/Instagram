@@ -10,9 +10,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.instagram.fragments.DetailFragment;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.SaveCallback;
@@ -23,10 +26,13 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
 
     private Context context;
     private List<Post> posts;
+    private FragmentManager fragmentManager;
+    private Fragment fragment;
 
-    public PostsAdapter(Context context, List<Post> posts) {
+    public PostsAdapter(Context context, List<Post> posts, FragmentManager fragmentManager) {
         this.context = context;
         this.posts = posts;
+        this.fragmentManager = fragmentManager;
     }
 
     @NonNull
@@ -73,9 +79,11 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
                     post.saveInBackground(new SaveCallback() {
                         @Override
                         public void done(ParseException e) {
-                            Intent intent = new Intent(context, DetailActivity.class);
-                            intent.putExtra("post", post);
-                            context.startActivity(intent);
+                            fragment = DetailFragment.newInstance(post.getUser().getUsername(),
+                                    Post.calculateTimeAgo(post.getCreatedAt()),
+                                    post.getDescription(),
+                                    post.getImage().getUrl());
+                            fragmentManager.beginTransaction().replace(R.id.flContainer, fragment).commit();
                         }
                     });
                 }

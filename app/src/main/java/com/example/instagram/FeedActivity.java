@@ -59,7 +59,7 @@ public class FeedActivity extends AppCompatActivity {
         rvPosts = findViewById(R.id.rvFeed);
 
         allPosts = new ArrayList<>();
-        adapter = new PostsAdapter(this, allPosts);
+        adapter = new PostsAdapter(this, allPosts, getSupportFragmentManager());
 
         rvPosts.setAdapter(adapter);
         rvPosts.setLayoutManager(new LinearLayoutManager(this));

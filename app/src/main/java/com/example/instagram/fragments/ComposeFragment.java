@@ -23,6 +23,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 
 import com.example.instagram.FeedActivity;
 import com.example.instagram.Post;
@@ -48,10 +49,9 @@ public class ComposeFragment extends Fragment {
     private ImageView ivPreview;
     private Button btnPicture;
     private Button btnSubmit;
-    private Button btnFeed;
+    private ProgressBar progressBar;
     private File photoFile;
     public String photoFileName = "photo.jpg";
-
 
     public ComposeFragment() {}
 
@@ -71,7 +71,7 @@ public class ComposeFragment extends Fragment {
         ivPreview = view.findViewById(R.id.ivPreview);
         btnPicture = view.findViewById(R.id.btnPicture);
         btnSubmit = view.findViewById(R.id.btnSubmit);
-        btnFeed = view.findViewById(R.id.btnFeed);
+        progressBar = view.findViewById(R.id.pbCompose);
 
         ivPreview.setImageResource(R.drawable.ic_baseline_image_24);
 
@@ -96,15 +96,10 @@ public class ComposeFragment extends Fragment {
                     return;
                 }
                 ParseUser currentUser = ParseUser.getCurrentUser();
+                progressBar.setVisibility(ProgressBar.VISIBLE);
+                btnSubmit.setEnabled(false);
+                btnPicture.setEnabled(false);
                 savePost(v, description, currentUser, photoFile);
-            }
-        });
-
-        btnFeed.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getContext(), FeedActivity.class);
-                startActivity(intent);
             }
         });
 
@@ -132,6 +127,9 @@ public class ComposeFragment extends Fragment {
                     Snackbar.make(v, "Sorry, there was an error saving your post", Snackbar.LENGTH_LONG);
                     Log.e(TAG, "save post error", e);
                 }
+                progressBar.setVisibility(ProgressBar.INVISIBLE);
+                btnSubmit.setEnabled(true);
+                btnPicture.setEnabled(true);
                 etDescription.setText("");
                 ivPreview.setImageResource(0);
                 Log.i(TAG, "post saved");

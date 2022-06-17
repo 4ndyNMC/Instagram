@@ -53,12 +53,11 @@ public class PostsFragment extends Fragment {
             public void onRefresh() {
                 adapter.clear();
                 queryPosts();
-                swipeRefreshLayout.setRefreshing(false);
             }
         });
 
         allPosts = new ArrayList<>();
-        adapter = new PostsAdapter(getContext(), allPosts);
+        adapter = new PostsAdapter(getContext(), allPosts, getActivity().getSupportFragmentManager());
 
         rvPosts.setAdapter(adapter);
         rvPosts.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -78,8 +77,10 @@ public class PostsFragment extends Fragment {
                     Log.i(TAG, "queryPosts error", e);
                     return;
                 }
+                Log.i(TAG, "query finished");
                 allPosts.addAll(posts);
                 adapter.notifyDataSetChanged();
+                swipeRefreshLayout.setRefreshing(false);
             }
         });
     }
