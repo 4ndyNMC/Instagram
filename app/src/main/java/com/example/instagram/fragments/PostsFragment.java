@@ -7,6 +7,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -28,8 +29,9 @@ public class PostsFragment extends Fragment {
     public static final String TAG = "PostsFragment";
 
     private RecyclerView rvPosts;
-    private PostsAdapter adapter;
-    private List<Post> allPosts;
+    private SwipeRefreshLayout swipeRefreshLayout;
+    protected PostsAdapter adapter;
+    protected List<Post> allPosts;
 
     public PostsFragment() { }
 
@@ -45,21 +47,30 @@ public class PostsFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         rvPosts = view.findViewById(R.id.rvPosts);
 
+        swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainer);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                adapter.clear();
+                queryPosts();
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
+
         allPosts = new ArrayList<>();
         adapter = new PostsAdapter(getContext(), allPosts);
 
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        linearLayoutManager.setReverseLayout(true);
-        linearLayoutManager.setStackFromEnd(true);
         rvPosts.setAdapter(adapter);
-        rvPosts.setLayoutManager(linearLayoutManager);
+        rvPosts.setLayoutManager(new LinearLayoutManager(getContext()));
 
         queryPosts();
     }
 
-    private void queryPosts() {
+    protected void queryPosts() {
         ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
         query.include(Post.KEY_USER);
+        query.setLimit(20);
+        query.addDescendingOrder(Post.KEY_CREATED_AT);
         query.findInBackground(new FindCallback<Post>() {
             @Override
             public void done(List<Post> posts, ParseException e) {

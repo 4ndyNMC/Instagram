@@ -66,7 +66,7 @@ public class ComposeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        clCompose = view.findViewById(R.id.clMain);
+        clCompose = view.findViewById(R.id.clCompose);
         etDescription = view.findViewById(R.id.etDescription);
         ivPreview = view.findViewById(R.id.ivPreview);
         btnPicture = view.findViewById(R.id.btnPicture);
@@ -88,11 +88,11 @@ public class ComposeFragment extends Fragment {
                 String description = etDescription.getText().toString();
                 if (description.isEmpty()) {
                     etDescription.onEditorAction(EditorInfo.IME_ACTION_DONE);
-                    Snackbar.make(clCompose, "Please fill out a description", Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(v, "Please fill out a description", Snackbar.LENGTH_LONG).show();
                     return;
                 }
                 if (photoFile == null || ivPreview.getDrawable() == null) {
-                    Snackbar.make(clCompose, "There is no image", Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(v, "There is no image", Snackbar.LENGTH_LONG).show();
                     return;
                 }
                 ParseUser currentUser = ParseUser.getCurrentUser();

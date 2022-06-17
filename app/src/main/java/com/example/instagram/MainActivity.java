@@ -26,6 +26,7 @@ import androidx.fragment.app.FragmentManager;
 
 import com.example.instagram.fragments.ComposeFragment;
 import com.example.instagram.fragments.PostsFragment;
+import com.example.instagram.fragments.ProfileFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -94,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
                         setColors(getColor(R.color.white),
                                 getColor(R.color.white),
                                 getColor(R.color.black));
-                        fragment = new ComposeFragment();
+                        fragment = new ProfileFragment();
                         break;
                     default: break;
                 }
